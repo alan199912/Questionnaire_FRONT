@@ -1,0 +1,21 @@
+:host {
+  .container-play {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    .input-in {
+      width: 230px;
+      text-align: center;
+      height: 3.125rem;
+      font-size: 1.25rem;
+      font-family: Verdana;
+    }
+
+    .btn-in {
+      width: 230px;
+    }
+  }
+}

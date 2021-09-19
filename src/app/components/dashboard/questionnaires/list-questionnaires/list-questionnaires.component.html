@@ -1,0 +1,69 @@
+<div class="d-flex justify-content-center mt-3">
+  <button
+    [routerLink]="['/dashboard/questionnaire-form']"
+    class="button-primary btn-questionnaire"
+  >
+    NEW
+  </button>
+</div>
+<app-spinner
+  *ngIf="isLoading"
+  class="d-flex justify-content-center mt-3"
+></app-spinner>
+<div *ngIf="!isLoading" class="container mt-3">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <div class="card">
+        <div class="card-body text-center">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Questions</th>
+                <th>Code</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let questionnaire of listQuestionnaire">
+                <td>{{ questionnaire.title }}</td>
+                <td>{{ questionnaire.questionData.length }}</td>
+                <td>
+                  <span class="badge bg-dark">{{ questionnaire.code }}</span>
+                </td>
+                <td>
+                  <div class="d-flex justify-content-around icons">
+                    <i
+                      [routerLink]="[
+                        '/dashboard/questionnaire-info/',
+                        questionnaire._id
+                      ]"
+                      class="bi bi-search"
+                    ></i>
+                    <i class="bi bi-graph-up text-primary"></i>
+                    <i
+                      (click)="deleteQuestionnaire(questionnaire._id)"
+                      class="bi bi-trash-fill text-danger"
+                    ></i>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="!listQuestionnaire || listQuestionnaire.length < 0"
+  class="row mt-3 animated fadeIn"
+>
+  <div class="col-lg-8 offset-lg-2">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5>There are no questionnaries to show</h5>
+      </div>
+    </div>
+  </div>
+</div>

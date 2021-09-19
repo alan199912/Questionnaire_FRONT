@@ -1,0 +1,20 @@
+<div class="container-play">
+  <div *ngIf="isErrorUsername" class="alert alert-danger" role="alert">
+    <strong>Please introduce a username</strong>
+  </div>
+  <input
+    type="text"
+    class="form-control input-in mb-3"
+    placeholder="Enter a userName"
+    [(ngModel)]="userName"
+  />
+
+  <button
+    (keyup.enter)="startToPlay()"
+    (click)="startToPlay()"
+    type="button"
+    class="btn-in button-primary"
+  >
+    Start
+  </button>
+</div>

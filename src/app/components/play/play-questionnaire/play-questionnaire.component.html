@@ -1,0 +1,37 @@
+<div class="container mt-3">
+  <div class="d-flex justify-content-center mt-3">
+    <h1 class="title counter">
+      {{ getSeconds() }}
+    </h1>
+  </div>
+  <div class="row mt-2">
+    <div class="text-center">
+      <h3 class="title">{{ getTitle() }}</h3>
+      <div class="col-lg-6 offset-lg-3">
+        <ul class="list-group mt-3">
+          <li
+            class="list-group-item animate__animated animate__fadeIn"
+            *ngFor="
+              let answer of questionnaire.questionData[indexQuestion]
+                .listAnswer;
+              let i = index
+            "
+            (click)="selectedOptionByUser(answer, i)"
+            [ngClass]="addClassOptionSelected(answer)"
+          >
+            {{ answer.title }}
+          </li>
+        </ul>
+        <button
+          [disabled]="!selectedOption"
+          [ngClass]="{ disabled: !selectedOption }"
+          (click)="nextQuestionByButton()"
+          type="button"
+          class="button-primary mt-3 w-100"
+        >
+          Accept
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

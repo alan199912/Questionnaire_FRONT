@@ -1,0 +1,61 @@
+:host {
+  .input-question {
+    text-align: center;
+    font-family: Verdana;
+    font-weight: 800;
+    font-size: 2rem;
+  }
+
+  .card-item {
+    background: #131232;
+    border-radius: 20px;
+    height: 140px;
+
+    .title-item {
+      font-size: 32px;
+      font-weight: 800px;
+      color: #fff;
+      margin-bottom: 0px;
+      font-family: Verdana;
+      font-weight: 800;
+    }
+
+    .number-item {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .square {
+      cursor: pointer;
+      font-size: 24px;
+      margin-left: 3px;
+    }
+
+    .range {
+      padding: 0 20px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      background: #fff;
+      font-size: 1.5rem;
+    }
+  }
+
+  .check {
+    cursor: pointer;
+    font-size: 24px;
+  }
+
+  .input-answer {
+    text-align: center;
+    font-family: Verdana;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .disabled {
+    opacity: 0.5;
+  }
+}

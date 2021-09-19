@@ -3,7 +3,28 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  auth: {
+    registerUser: 'http://localhost:5000/api/v1/auth/registerUser',
+    loginUser: 'http://localhost:5000/api/v1/auth/loginUser',
+    renewToken: 'http://localhost:5000/api/v1/auth/renewToken',
+    getIdByToken: 'http://localhost:5000/api/v1/auth/getIdByToken',
+  },
+  user: {
+    getUserById: 'http://localhost:5000/api/v1/getUserById',
+  },
+  questionnaire: {
+    createQuestionnaire: 'http://localhost:5000/api/v1/createQuestionnaire',
+    getQuestionnaireByIdUser:
+      'http://localhost:5000/api/v1/getQuestionnaireByIdUser',
+    deleteQuestionnaire: 'http://localhost:5000/api/v1/deleteQuestionnaire',
+    getQuestionnaireById: 'http://localhost:5000/api/v1/getQuestionnaireById',
+    getQuestionnaireByCode:
+      'http://localhost:5000/api/v1/getQuestionnaireByCode',
+    saveResultByUser: 'http://localhost:5000/api/v1/saveResultByUser',
+    getAnswerById: 'http://localhost:5000/api/v1/getAnswerById',
+    getAllQuestionnaires: 'http://localhost:5000/api/v1/getAllQuestionnaires',
+  },
 };
 
 /*

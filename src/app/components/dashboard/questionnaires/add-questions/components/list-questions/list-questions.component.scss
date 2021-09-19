@@ -1,0 +1,30 @@
+:host {
+  .title-question {
+    text-align: center;
+    font-size: 20px;
+    font-family: Verdana;
+    font-weight: 800;
+  }
+
+  .list {
+    font-size: 16px;
+    font-family: Verdana;
+    font-weight: 800;
+    color: #000;
+    text-align: center;
+  }
+
+  .answer-correct {
+    background: #0d730d;
+    color: #fff;
+  }
+
+  .answer-incorrect {
+    background: #a2231d;
+    color: #fff;
+  }
+
+  i {
+    cursor: pointer;
+  }
+}

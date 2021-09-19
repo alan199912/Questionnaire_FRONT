@@ -1,0 +1,110 @@
+<div
+  *ngIf="isShowErrorForm"
+  class="alert alert-danger text-center animated fadeIn"
+  role="alert"
+>
+  Complete all the fields
+</div>
+
+<div class="container">
+  <div class="row mt-3 mb-5">
+    <div class="col-lg-8 offset-lg-2">
+      <form [formGroup]="questionForm" (ngSubmit)="addQuestion()">
+        <input
+          formControlName="title"
+          type="text"
+          name="title"
+          id="title"
+          class="form-control form-control-lg input-question"
+          placeholder="Enter question"
+        />
+        <div class="row mt-5">
+          <div class="col-lg-6 text-center">
+            <div class="card-item">
+              <p class="title-item">Seconds</p>
+              <p class="number-item">{{ getSeconds }}</p>
+              <div>
+                <i
+                  class="bi bi-plus-square text-light square"
+                  (click)="countSeconds(1)"
+                ></i>
+                <i
+                  class="bi bi-dash-square text-light square"
+                  (click)="countSeconds(-1)"
+                ></i>
+              </div>
+            </div>
+            <div
+              *ngIf="questionForm.get('seconds').hasError('min')"
+              class="alert alert-danger mt-2 animated fadeIn"
+              role="alert"
+            >
+              You have to add more than 5 seconds
+            </div>
+            <div
+              *ngIf="questionForm.get('seconds').hasError('max')"
+              class="alert alert-danger mt-2 animated fadeIn"
+              role="alert"
+            >
+              You have to add less than 30 seconds
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-5 mt-lg-0 text-center">
+            <div class="card-item">
+              <p class="title-item">Scores</p>
+              <p class="number-item">{{ getScore }}</p>
+              <input
+                formControlName="score"
+                type="range"
+                class="range form-range"
+                placeholder=""
+                min="0"
+                max="2000"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-6" *ngFor="let answer of arrayAnswer; let i = index">
+            <div [formGroupName]="answer" class="input-group mb-3">
+              <input
+                formControlName="title"
+                type="text"
+                class="form-control input-answer"
+                [placeholder]="'Add answer ' + (i + 1)"
+              />
+              <span (click)="isCorrectAnswer(answer)" class="input-group-text">
+                <i
+                  [ngClass]="
+                    !getIsCorrectAnswer(answer)
+                      ? 'bi bi-circle check '
+                      : 'bi bi-check-circle-fill check animate__animated animate__zoomIn'
+                  "
+                ></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12 text-center">
+            <button
+              [disabled]="isEndQuestionnaire"
+              type="submit"
+              class="button-primary"
+              [ngClass]="{ disabled: isEndQuestionnaire }"
+            >
+              Add question
+            </button>
+          </div>
+        </div>
+      </form>
+      <app-list-questions
+        #listQuestions
+        *ngIf="question"
+        [question]="question"
+        (isEndQuestionnaire)="isEndQuestionnaireEmitted($event)"
+      ></app-list-questions>
+    </div>
+  </div>
+</div>

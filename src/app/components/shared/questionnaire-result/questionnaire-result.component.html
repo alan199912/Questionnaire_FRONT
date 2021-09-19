@@ -1,0 +1,75 @@
+<div *ngIf="isLoading" class="container-result">
+  <app-spinner></app-spinner>
+</div>
+<div *ngIf="!isLoading && answer" class="container mt-5">
+  <div class="text-center animate__animated animate__backInDown">
+    <h1 class="title">RESUMEN</h1>
+    <div class="card">
+      <div class="card-body">
+        <div class="row tm-2">
+          <div class="col-lg-6">
+            <h3 class="title">Name: {{ answer?.participantUserName }}</h3>
+          </div>
+          <div class="col-lg-6">
+            <h3 class="title">Score: {{ answer?.totalScore }}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-lg-4">
+        <div class="card text-light bg-dark">
+          <div class="card-body">
+            <h6 class="title">
+              Total Questions: {{ answer.listAnswerByUser.length }}
+            </h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card text-light bg-success">
+          <div class="card-body">
+            <h6 class="title">Total Corrects: {{ answer.corrects }}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card text-light bg-danger">
+          <div class="card-body">
+            <h6 class="title">Total Incorrects: {{ answer.inCorrects }}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3" *ngFor="let question of answer.listAnswerByUser">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body-text-center">
+            <h3 class="title">{{ question.title }}</h3>
+            <ul class="list-group">
+              <li
+                class="list-group-item"
+                *ngFor="let list of question.listAnswer; let i = index"
+                [ngClass]="{
+                  'answer-correct':
+                    list.isCorrect && i === question.indexQuestion,
+                  'answer-incorrect':
+                    !list.isCorrect && i === question.indexQuestion
+                }"
+              >
+                {{ list.title }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row my-3">
+      <div class="col-lg-6 offset-lg-3 text-center">
+        <button (click)="back()" type="button" class="button-primary w-100">
+          Back
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

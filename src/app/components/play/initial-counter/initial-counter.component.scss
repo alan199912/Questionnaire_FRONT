@@ -1,0 +1,13 @@
+:host {
+  .container-counter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .counter {
+    font-size: 200px;
+  }
+}

@@ -1,0 +1,27 @@
+:host {
+  .container-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  li {
+    font-size: 16px;
+    font-family: Verdana;
+    font-weight: 800;
+    color: #000;
+    text-align: center;
+  }
+
+  .answer-correct {
+    background: #0d730d;
+    color: #fff;
+  }
+
+  .answer-incorrect {
+    background: #a2231d;
+    color: #fff;
+  }
+}

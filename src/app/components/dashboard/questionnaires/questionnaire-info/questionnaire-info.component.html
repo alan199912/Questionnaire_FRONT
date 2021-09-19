@@ -1,0 +1,55 @@
+<app-spinner
+  *ngIf="isLoading"
+  class="d-flex justify-content-center mt-5"
+></app-spinner>
+<div *ngIf="!isLoading" class="container mt-3">
+  <div class="d-flex justify-content-center mt-3">
+    <div class="card">
+      <div class="card-body text-center">
+        <h2 class="p-title title">{{ questionnaire.title }}</h2>
+        <h4>{{ questionnaire.description }}</h4>
+      </div>
+    </div>
+  </div>
+  <div *ngFor="let question of questionnaire.questionData" class="row mt-5">
+    <div class="col-lg-8 offset-lg-2">
+      <div class="card">
+        <div class="card-body text-center">
+          <h4 class="title">{{ question.title }}</h4>
+          <div class="row mt-3">
+            <div class="col-lg-3 offset-lg-3">
+              <p>
+                <span class="badge bg-dark"> {{ question.seconds }}s </span>
+              </p>
+            </div>
+            <div class="col-lg-3">
+              <p>
+                <span class="badge bg-dark"> {{ question.score }} pts </span>
+              </p>
+            </div>
+          </div>
+          <ul class="list-group">
+            <li
+              class="list-group-item"
+              [ngClass]="{ 'answer-correct': answer.isCorrect }"
+              *ngFor="let answer of question.listAnswer"
+            >
+              {{ answer.title }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-3">
+    <div class="col-lg-8 offset-lg-2 text-center">
+      <button
+        [routerLink]="['/dashboard']"
+        type="button"
+        class="button-primary w-100"
+      >
+        Back
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+:host {
+  .disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .container-play {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .counter {
+    font-size: 5rem;
+  }
+
+  li {
+    font-size: 20px;
+    font-family: Verdana;
+    font-weight: 800;
+    cursor: pointer;
+    color: #000;
+  }
+
+  .asnwer-selected {
+    background: #131d2d;
+    color: #fff;
+  }
+
+  .answer-correct {
+    background: #0d730d;
+    color: #fff;
+  }
+
+  .answer-incorrect {
+    background: #a2231d;
+    color: #fff;
+  }
+
+  button {
+    font-size: 20px;
+  }
+}

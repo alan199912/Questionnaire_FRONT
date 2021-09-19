@@ -1,0 +1,33 @@
+<div
+  class="btn btn-secondary btn-lg position-fixed ml-5"
+  style="margin-left: 15px"
+>
+  <i
+    [routerLink]="['/']"
+    routerLinkActive="router-link-active"
+    class="bi bi-arrow-left"
+  ></i>
+</div>
+<div class="container-code mt-5">
+  <div class="col-lg-8">
+    <div class="card mb-3" *ngFor="let question of questionnaires">
+      <div class="card-body text-center">
+        <p class="title">
+          <span class="badge bg-dark">THEME: </span> {{ question.title }}
+        </p>
+        <p class="title-question">
+          <span class="badge bg-dark">DESCRIPTION: </span>
+          {{ question.description }}
+        </p>
+        <div class="row">
+          <div class="col-12">
+            <p>
+              <span class="badge bg-dark">CODE: </span>
+              {{ question.code }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,54 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+body {
+  background: #4b6cb7;
+  background: -webkit-linear-gradient(to right, #182848, #4b6cb7);
+  background: linear-gradient(to right, #182848, #4b6cb7);
+}
+
+.button-primary {
+  height: 3.125rem;
+  background: rgba(51, 51, 51);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  font-size: 20px;
+  font-family: Verdana;
+  font-weight: 800;
+}
+
+.title {
+  font-family: Verdana;
+  font-weight: 800;
+}
+
+.p-title {
+  padding: 0px 22px;
+}
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.fast {
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+}

@@ -1,0 +1,21 @@
+:host {
+  span {
+    font-size: 1rem;
+  }
+
+  li {
+    font-size: 1rem;
+    font-family: Verdana;
+    font-weight: 800;
+  }
+
+  .answer-correct {
+    background: #0d730d;
+    color: #fff;
+  }
+
+  .answer-incorrect {
+    background: #a2231d;
+    color: #fff;
+  }
+}

@@ -1,0 +1,55 @@
+<app-spinner
+  *ngIf="isLoading"
+  class="d-flex justify-content-center mt-3"
+></app-spinner>
+<div *ngIf="!isLoading" class="row mt-3">
+  <div class="col-lg-8 offset-lg-2">
+    <div
+      class="card mb-3"
+      *ngFor="let question of listQuestions; let i = index"
+    >
+      <div class="card-body text-center">
+        <p class="title-question">{{ question.title }}</p>
+        <div class="row">
+          <div class="col-6">
+            <p>
+              <span class="badge bg-dark">{{ question.seconds }}s</span>
+            </p>
+          </div>
+          <div class="col-6">
+            <p>
+              <span class="badge bg-dark">{{ question.score }} score</span>
+            </p>
+          </div>
+        </div>
+        <ul class="list-group">
+          <li
+            class="list list-group-item"
+            *ngFor="let answer of question.listAnswer"
+            [ngClass]="answer.isCorrect && 'answer-correct'"
+          >
+            {{ answer.title }}
+          </li>
+        </ul>
+        <div class="d-flex justify-content-center mt-2">
+          <i
+            (click)="deleteQuestion(i)"
+            class="bi bi-trash-fill text-danger"
+          ></i>
+        </div>
+      </div>
+    </div>
+    <div class="row my-3">
+      <div class="col-12 text-center">
+        <button
+          [hidden]="listQuestions.length < 5"
+          (click)="finishQuestionnaire()"
+          type="button"
+          class="button-primary w-100"
+        >
+          Finish questionnaire
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
