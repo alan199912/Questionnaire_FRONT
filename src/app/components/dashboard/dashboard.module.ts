@@ -10,6 +10,7 @@ import { QuestionnaireFormComponent } from './questionnaires/questionnaire-form/
 import { AddQuestionsComponent } from './questionnaires/add-questions/add-questions.component';
 import { ListQuestionsComponent } from './questionnaires/add-questions/components/list-questions/list-questions.component';
 import { QuestionnaireInfoComponent } from './questionnaires/questionnaire-info/questionnaire-info.component';
+import { QuestionnaireStatsComponent } from './questionnaires/questionnaire-stats/questionnaire-stats.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { QuestionnaireInfoComponent } from './questionnaires/questionnaire-info/
     AddQuestionsComponent,
     ListQuestionsComponent,
     QuestionnaireInfoComponent,
+    QuestionnaireStatsComponent,
   ],
   imports: [CommonModule, DashboardRoutingModule, SharedModule],
 })

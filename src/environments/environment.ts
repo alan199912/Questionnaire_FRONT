@@ -24,6 +24,9 @@ export const environment = {
     saveResultByUser: 'http://localhost:5000/api/v1/saveResultByUser',
     getAnswerById: 'http://localhost:5000/api/v1/getAnswerById',
     getAllQuestionnaires: 'http://localhost:5000/api/v1/getAllQuestionnaires',
+    getAnswerByIdQuestionnaire:
+      'http://localhost:5000/api/v1/getAnswerByIdQuestionnaire',
+    deleteAnswer: 'http://localhost:5000/api/v1/deleteAnswer',
   },
 };
 

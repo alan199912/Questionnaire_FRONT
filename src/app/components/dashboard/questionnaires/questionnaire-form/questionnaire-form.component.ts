@@ -44,7 +44,5 @@ export class QuestionnaireFormComponent {
     };
 
     this.router.navigate(['/dashboard/add-questions']);
-
-    console.log('a');
   }
 }

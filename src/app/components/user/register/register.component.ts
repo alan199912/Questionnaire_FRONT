@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -14,9 +16,10 @@ interface VerifyPasswords {
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
   public registerForm: FormGroup;
   public isLoader = false;
+  public onDestroy$: Subject<void> = new Subject();
 
   constructor(
     private readonly fb: FormBuilder,
@@ -37,27 +40,30 @@ export class RegisterComponent {
     );
   }
 
-  public async registerUser(): Promise<void> {
+  public registerUser(): void {
     if (this.registerForm.invalid) {
       return;
     }
 
     this.isLoader = true;
 
-    try {
-      const response: ResponseData = await this.authService
-        .registerUser(
-          this.registerForm.value.email,
-          this.registerForm.value.username,
-          this.registerForm.value.confirmPassword
-        )
-        .toPromise();
-      this.toastr.success(response.message, 'User register.');
-      this.router.navigate(['/login']);
-    } catch (error) {
-      this.isLoader = false;
-      this.toastr.error(error.error.message, 'User register.');
-    }
+    this.authService
+      .registerUser(
+        this.registerForm.value.email,
+        this.registerForm.value.username,
+        this.registerForm.value.confirmPassword
+      )
+      .pipe(takeUntil(this.onDestroy$.asObservable()))
+      .subscribe(
+        (response: ResponseData) => {
+          this.toastr.success(response.message, 'User register.');
+          this.router.navigate(['/login']);
+        },
+        (error) => {
+          this.isLoader = false;
+          this.toastr.error(error.error.message, 'User register.');
+        }
+      );
   }
 
   private checkPassword(group: FormGroup): VerifyPasswords {
@@ -65,5 +71,10 @@ export class RegisterComponent {
       group.controls.password?.value !==
         group.controls.confirmPassword?.value && { notSame: true }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.complete();
+    this.onDestroy$.unsubscribe();
   }
 }

@@ -1,3 +1,5 @@
+import { AnswerByUser, ListAnswer } from './answer.interface';
+
 export interface QuestionnairesResponseData {
   status: string;
   questionnaire: Questionnaire[];
@@ -36,16 +38,6 @@ export interface QuestionData {
   listAnswer: ListAnswer[];
 }
 
-export interface ListAnswer {
-  title: string;
-  isCorrect: boolean;
-}
-
-export interface AnswerResponse {
-  status: string;
-  message: string;
-}
-
 export interface ResultQuestionnaireResponse {
   status: string;
   answer: ResultQuestionnaire;
@@ -65,12 +57,4 @@ export interface ResultQuestionnaire {
   inCorrects: number;
   totalScore: number;
   listAnswerByUser: AnswerByUser[];
-}
-
-export interface AnswerByUser {
-  title: string;
-  getScore: number | string;
-  seconds: number | string;
-  indexQuestion: number | string;
-  listAnswer: ListAnswer[];
 }

@@ -40,7 +40,13 @@
                       ]"
                       class="bi bi-search"
                     ></i>
-                    <i class="bi bi-graph-up text-primary"></i>
+                    <i
+                      [routerLink]="[
+                        '/dashboard/questionnaire-stats/',
+                        questionnaire._id
+                      ]"
+                      class="bi bi-graph-up text-primary"
+                    ></i>
                     <i
                       (click)="deleteQuestionnaire(questionnaire._id)"
                       class="bi bi-trash-fill text-danger"

@@ -24,7 +24,7 @@ const routes: Routes = [
     component: PlayQuestionnaireComponent,
   },
   {
-    path: 'result-questionnaire/:id',
+    path: 'result-questionnaire/:id/:boolean',
     component: QuestionnaireResultComponent,
   },
 ];

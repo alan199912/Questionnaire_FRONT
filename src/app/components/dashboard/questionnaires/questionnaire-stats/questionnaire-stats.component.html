@@ -1,0 +1,73 @@
+<app-spinner
+  *ngIf="isLoading"
+  class="d-flex justify-content-center mt-3"
+></app-spinner>
+<div *ngIf="!isLoading" class="container">
+  <div class="d-flex justify-content-center mt-3">
+    <div class="card title">
+      <div class="card-body">
+        <h2 class="title">List of answers</h2>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3" *ngIf="answers.length > 0; else noAnswerToShow">
+    <div class="col-lg-8 offset-lg-2">
+      <div class="card">
+        <div class="card-body text-center">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Participant</th>
+                <th>Date</th>
+                <th>Score</th>
+                <th style="width: 20%">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let answer of answers">
+                <td>
+                  {{ answer.participantUserName }}
+                </td>
+                <td>
+                  {{ answer.date | date }}
+                </td>
+                <td>
+                  {{ answer.totalScore }}
+                </td>
+                <td class="d-flex justify-content-around">
+                  <i (click)="showResults(answer._id)" class="bi bi-search"></i
+                  ><i
+                    (click)="deleteAnswer(answer._id)"
+                    class="bi bi-trash-fill text-danger"
+                  ></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #noAnswerToShow>
+    <div class="row mt-3" *ngIf="answers.length === 0">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5>There are not answer to show</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <button
+        [routerLink]="['/dashboard']"
+        type="button"
+        class="button-primary my-3 w-100"
+      >
+        Back
+      </button>
+    </div>
+  </div>
+</div>

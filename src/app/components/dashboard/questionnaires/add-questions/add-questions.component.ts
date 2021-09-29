@@ -1,11 +1,9 @@
-import {
-  ListAnswer,
-  QuestionData,
-} from './../../../../interfaces/questionnaire.interface';
+import { QuestionData } from './../../../../interfaces/questionnaire.interface';
 
 import { AfterViewChecked, ChangeDetectorRef, Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { QuestionnaireService } from 'src/app/services/questionnaire/questionnaire.service';
+import { ListAnswer } from 'src/app/interfaces/answer.interface';
 
 @Component({
   selector: 'app-add-questions',

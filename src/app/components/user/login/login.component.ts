@@ -1,17 +1,21 @@
-import { Component } from '@angular/core';
+import { takeUntil, catchError } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   public loginForm: FormGroup;
   public isLoader = false;
+  public onDestroy$: Subject<void> = new Subject();
 
   constructor(
     private readonly fb: FormBuilder,
@@ -25,25 +29,31 @@ export class LoginComponent {
     });
   }
 
-  public async loginUser(): Promise<void> {
+  public loginUser(): void {
     if (this.loginForm.invalid) {
       return;
     }
 
     this.isLoader = true;
 
-    try {
-      const user = await this.authService
-        .loginUser(this.loginForm.value.email, this.loginForm.value.password)
-        .toPromise();
+    this.authService
+      .loginUser(this.loginForm.value.email, this.loginForm.value.password)
+      .pipe(takeUntil(this.onDestroy$.asObservable()))
+      .subscribe(
+        (user) => {
+          localStorage.setItem('TOKEN', user.token);
+          this.router.navigate(['/dashboard']);
+        },
+        (error) => {
+          this.isLoader = false;
+          this.toastr.error(error, 'User login.');
+          this.loginForm.reset();
+        }
+      );
+  }
 
-      localStorage.setItem('TOKEN', user.token);
-
-      this.router.navigate(['/dashboard']);
-    } catch (error) {
-      this.isLoader = false;
-      this.toastr.error(error.error.message, 'User login.');
-      this.loginForm.reset();
-    }
+  ngOnDestroy(): void {
+    this.onDestroy$.complete();
+    this.onDestroy$.unsubscribe();
   }
 }

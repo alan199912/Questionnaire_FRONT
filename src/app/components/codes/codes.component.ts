@@ -1,6 +1,8 @@
 import { Questionnaire } from 'src/app/interfaces/questionnaire.interface';
 import { Component, OnInit } from '@angular/core';
 import { QuestionnaireService } from 'src/app/services/questionnaire/questionnaire.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-codes',
@@ -9,6 +11,7 @@ import { QuestionnaireService } from 'src/app/services/questionnaire/questionnai
 })
 export class CodesComponent implements OnInit {
   public questionnaires: Questionnaire[];
+  public onDestroy$: Subject<void> = new Subject();
 
   constructor(private readonly questionService: QuestionnaireService) {}
 
@@ -16,11 +19,18 @@ export class CodesComponent implements OnInit {
     this.getAllQuestionnaires();
   }
 
-  private async getAllQuestionnaires(): Promise<void> {
-    this.questionnaires = await this.questionService
+  private getAllQuestionnaires(): void {
+    this.questionService
       .getAllQuestionnaires()
-      .toPromise();
+      .pipe(takeUntil(this.onDestroy$.asObservable()))
+      .subscribe((questionnaire) => {
+        this.questionnaires = questionnaire;
+        console.log(this.questionnaires);
+      });
+  }
 
-    console.log(this.questionnaires);
+  ngOnDestroy(): void {
+    this.onDestroy$.complete();
+    this.onDestroy$.unsubscribe();
   }
 }

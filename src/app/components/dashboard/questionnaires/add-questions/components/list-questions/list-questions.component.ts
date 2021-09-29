@@ -1,3 +1,5 @@
+import { takeUntil, mergeMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import {
   QuestionData,
   Questionnaire,
@@ -8,6 +10,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -21,9 +24,10 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './list-questions.component.html',
   styleUrls: ['./list-questions.component.scss'],
 })
-export class ListQuestionsComponent implements OnChanges {
+export class ListQuestionsComponent implements OnChanges, OnDestroy {
   public listQuestions: QuestionData[] = [];
   public isLoading = false;
+  public onDestroy$: Subject<void> = new Subject();
 
   @Input() public question: QuestionData;
   @Output() public isEndQuestionnaire = new EventEmitter<boolean>();
@@ -49,36 +53,52 @@ export class ListQuestionsComponent implements OnChanges {
     return this.listQuestions.splice(i, 1);
   }
 
-  public async finishQuestionnaire(): Promise<void> {
+  public finishQuestionnaire(): void {
     this.isLoading = true;
-    const id = await this.authService.getIdByToken().toPromise();
 
-    const questionnaire: Questionnaire = {
-      idUser: id,
-      title: this.questionnaireService.questionnaireData.title,
-      description: this.questionnaireService.questionnaireData.description,
-      code: this.generateCode(),
-      numberQuestions: this.listQuestions.length,
-      questionData: this.listQuestions,
-      createdAt: new Date(),
-    };
+    this.authService
+      .getIdByToken()
+      .pipe(
+        takeUntil(this.onDestroy$.asObservable()),
+        mergeMap((id) => {
+          const questionnaire: Questionnaire = {
+            idUser: id,
+            title: this.questionnaireService.questionnaireData.title,
+            description:
+              this.questionnaireService.questionnaireData.description,
+            code: this.generateCode(),
+            numberQuestions: this.listQuestions.length,
+            questionData: this.listQuestions,
+            createdAt: new Date(),
+          };
 
-    try {
-      await this.questionnaireService
-        .createQuestionnaire(questionnaire)
-        .toPromise();
-      this.toastr.success(
-        'Questionnaire created successfully',
-        'Questionnaire'
+          return this.questionnaireService
+            .createQuestionnaire(questionnaire)
+            .pipe(takeUntil(this.onDestroy$.asObservable()));
+        })
+      )
+      .subscribe(
+        (res) => {
+          console.log(res);
+          this.toastr.success(
+            'Questionnaire created successfully',
+            'Questionnaire'
+          );
+          this.router.navigate(['/dashboard']);
+        },
+        (error) => {
+          this.isLoading = false;
+          this.toastr.success('Error to create the Questionnaire', 'ERROR');
+        }
       );
-      this.router.navigate(['/dashboard']);
-    } catch (error) {
-      this.isLoading = false;
-      this.toastr.success('Error to create the Questionnaire', 'ERROR');
-    }
   }
 
   private generateCode(): string {
     return nanoid(6).toLocaleUpperCase();
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.complete();
+    this.onDestroy$.unsubscribe();
   }
 }

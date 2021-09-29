@@ -1,5 +1,7 @@
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { Questionnaire } from './../../interfaces/questionnaire.interface';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuestionnaireService } from 'src/app/services/questionnaire/questionnaire.service';
 import { ToastrService } from 'ngx-toastr';
@@ -9,10 +11,11 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy {
   public isErrorPIN = false;
   public pin: string;
   public isLoading = false;
+  public onDestroy$: Subject<void> = new Subject();
 
   constructor(
     private readonly router: Router,
@@ -20,7 +23,7 @@ export class HomeComponent {
     private readonly toastService: ToastrService
   ) {}
 
-  public async EnterCode(): Promise<void> {
+  public EnterCode(): void {
     if (!this.pin || this.pin === '') {
       this.isErrorPIN = true;
 
@@ -30,18 +33,26 @@ export class HomeComponent {
       return;
     }
 
-    try {
-      this.isLoading = true;
-      const questionnaire: Questionnaire = await this.questionnaireService
-        .getQuestionnaireByCode(this.pin)
-        .toPromise();
+    this.isLoading = true;
 
-      this.questionnaireService.questionnaire = questionnaire;
-      this.isLoading = false;
-      this.router.navigate(['/play/enter-name']);
-    } catch (error) {
-      this.isLoading = false;
-      this.toastService.error(error.error.message, 'ERROR');
-    }
+    this.questionnaireService
+      .getQuestionnaireByCode(this.pin)
+      .pipe(takeUntil(this.onDestroy$.asObservable()))
+      .subscribe(
+        (questionnaire: Questionnaire) => {
+          this.questionnaireService.questionnaire = questionnaire;
+          this.isLoading = false;
+          this.router.navigate(['/play/enter-name']);
+        },
+        (error) => {
+          this.isLoading = false;
+          this.toastService.error(error, 'ERROR');
+        }
+      );
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.complete();
+    this.onDestroy$.unsubscribe();
   }
 }

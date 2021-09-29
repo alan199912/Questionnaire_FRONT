@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable, Output } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   LoginUser,
@@ -29,10 +29,9 @@ export class AuthService {
       username,
       password,
     };
-    return this.http.post<ResponseData>(
-      environment.auth.registerUser,
-      bodyUser
-    );
+    return this.http
+      .post<ResponseData>(environment.auth.registerUser, bodyUser)
+      .pipe(catchError((error) => throwError(error.error.message)));
   }
 
   public loginUser(email: string, password: string): Observable<LoginUser> {
@@ -40,7 +39,9 @@ export class AuthService {
       email,
       password,
     };
-    return this.http.post<LoginUser>(environment.auth.loginUser, bodyUser);
+    return this.http
+      .post<LoginUser>(environment.auth.loginUser, bodyUser)
+      .pipe(catchError((error) => throwError(error.error.message)));
   }
 
   public verifyToken = (): Observable<boolean> => {
@@ -57,6 +58,9 @@ export class AuthService {
       .get<ResponseId>(environment.auth.getIdByToken, {
         headers: { token: this.token },
       })
-      .pipe(map(({ id }) => id));
+      .pipe(
+        map(({ id }) => id),
+        catchError((error) => throwError(error.error.message))
+      );
   }
 }

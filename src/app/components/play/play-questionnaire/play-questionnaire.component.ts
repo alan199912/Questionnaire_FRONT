@@ -1,13 +1,15 @@
+import { AnswerService } from './../../../services/answer/answer.service';
+import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import {
-  AnswerByUser,
-  ListAnswer,
   Questionnaire,
   ResultQuestionnaire,
 } from './../../../interfaces/questionnaire.interface';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { QuestionnaireService } from 'src/app/services/questionnaire/questionnaire.service';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
+import { AnswerByUser, ListAnswer } from 'src/app/interfaces/answer.interface';
 
 interface SelectedOption {
   answer: ListAnswer;
@@ -32,9 +34,11 @@ export class PlayQuestionnaireComponent implements OnInit, OnDestroy {
   public numberInCorrects = 0;
   public totalScore = 0;
   public listAnswerByUser: AnswerByUser[] = [];
+  public onDestroy$: Subject<void> = new Subject();
 
   constructor(
     private readonly questionService: QuestionnaireService,
+    private readonly answerService: AnswerService,
     private readonly router: Router,
     private readonly toastService: ToastrService
   ) {}
@@ -151,7 +155,7 @@ export class PlayQuestionnaireComponent implements OnInit, OnDestroy {
     this.numberCorrects++;
   }
 
-  private async saveUserResult(): Promise<void> {
+  private saveUserResult(): void {
     const resultQuestionnaire: ResultQuestionnaire = {
       idQuestionnaire: this.questionnaire._id,
       participantUserName: this.username,
@@ -162,25 +166,31 @@ export class PlayQuestionnaireComponent implements OnInit, OnDestroy {
       listAnswerByUser: this.listAnswerByUser,
     };
 
-    try {
-      const resultAnswer = await this.questionService
-        .saveResultByUser(resultQuestionnaire)
-        .toPromise();
-
-      this.toastService.success(
-        'Questionnaire completed successfully',
-        'Questionnaire'
+    this.answerService
+      .saveResultByUser(resultQuestionnaire)
+      .pipe(takeUntil(this.onDestroy$.asObservable()))
+      .subscribe(
+        (resultAnswer) => {
+          this.toastService.success(
+            'Questionnaire completed successfully',
+            'Questionnaire'
+          );
+          this.router.navigate([
+            `/play/result-questionnaire/${resultAnswer._id}/${true}`,
+          ]);
+        },
+        (error) => {
+          this.router.navigate(['/']);
+          this.toastService.success(error.error.message, 'ERROR');
+        }
       );
-      this.router.navigate([`/play/result-questionnaire/${resultAnswer._id}`]);
-    } catch (error) {
-      this.router.navigate(['/']);
-      this.toastService.success(error.error.message, 'ERROR');
-    }
 
     console.log(resultQuestionnaire);
   }
 
   ngOnDestroy(): void {
     clearInterval(this.setInterval);
+    this.onDestroy$.complete();
+    this.onDestroy$.unsubscribe();
   }
 }
