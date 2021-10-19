@@ -1,0 +1,30 @@
+<div
+  class="btn btn-secondary btn-lg position-fixed ml-5"
+  style="margin-left: 15px"
+>
+  <i
+    [routerLink]="['/']"
+    routerLinkActive="router-link-active"
+    class="bi bi-arrow-left"
+  ></i>
+</div>
+<div class="container-code mt-5">
+  <div class="col-lg-8">
+    <table class="table table-striped bg-light">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Code</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let question of questionnaires">
+        <tr>
+          <td>{{ question.title }}</td>
+          <td>{{ question.description }}</td>
+          <td>{{ question.code }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

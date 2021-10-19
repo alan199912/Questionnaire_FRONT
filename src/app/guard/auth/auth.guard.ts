@@ -34,7 +34,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     return this.authService.verifyToken().pipe(
       tap((auth) => {
         if (!auth) {
-          return this.router.navigate(['/login']);
+          return this.router.navigate(['/auth/login']);
         }
       })
     );
@@ -51,7 +51,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     return this.authService.verifyToken().pipe(
       tap((auth) => {
         if (!auth) {
-          return this.router.navigate(['/login']);
+          return this.router.navigate(['/auth/login']);
         }
       })
     );

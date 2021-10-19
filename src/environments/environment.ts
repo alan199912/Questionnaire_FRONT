@@ -9,9 +9,11 @@ export const environment = {
     loginUser: 'http://localhost:5000/api/v1/auth/loginUser',
     renewToken: 'http://localhost:5000/api/v1/auth/renewToken',
     getIdByToken: 'http://localhost:5000/api/v1/auth/getIdByToken',
+    recoveryPassword: 'http://localhost:5000/api/v1/auth/recoveryPassword',
   },
   user: {
     getUserById: 'http://localhost:5000/api/v1/getUserById',
+    updatePassword: 'http://localhost:5000/api/v1/updatePassword',
   },
   questionnaire: {
     createQuestionnaire: 'http://localhost:5000/api/v1/createQuestionnaire',

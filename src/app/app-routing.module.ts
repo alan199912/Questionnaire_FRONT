@@ -1,30 +1,30 @@
 import { QuestionnaireInfoGuard } from './guard/questionnaire-info/questionnaire-info.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { HomeComponent } from './components/home/home.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { HomeComponent } from './pages/home/home.component';
 import { AuthGuard } from './guard/auth/auth.guard';
-import { CodesComponent } from './components/codes/codes.component';
+import { CodesComponent } from './pages/codes/codes.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'codes', component: CodesComponent },
   {
-    path: 'user',
+    path: 'auth',
     loadChildren: () =>
-      import('./components/user/user.module').then((m) => m.UserModule),
+      import('./pages/auth/auth.module').then((m) => m.AuthModule),
   },
   {
     path: 'play',
     loadChildren: () =>
-      import('./components/play/play.module').then((m) => m.PlayModule),
+      import('./pages/play/play.module').then((m) => m.PlayModule),
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
     canLoad: [AuthGuard],
     loadChildren: () =>
-      import('./components/dashboard/dashboard.module').then(
+      import('./pages/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
   },

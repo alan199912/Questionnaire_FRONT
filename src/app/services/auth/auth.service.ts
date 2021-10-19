@@ -6,7 +6,7 @@ import {
   LoginUser,
   ResponseData,
   ResponseId,
-} from 'src/app/interfaces/user.interface';
+} from 'src/app/interfaces/auth.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -60,6 +60,19 @@ export class AuthService {
       })
       .pipe(
         map(({ id }) => id),
+        catchError((error) => throwError(error.error.message))
+      );
+  }
+
+  public recoveryPassword(email: string): Observable<string> {
+    const body = {
+      email,
+    };
+
+    return this.http
+      .post<ResponseData>(environment.auth.recoveryPassword, body)
+      .pipe(
+        map(({ message }) => message),
         catchError((error) => throwError(error.error.message))
       );
   }
